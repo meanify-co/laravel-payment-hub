@@ -13,15 +13,16 @@ class Postback implements ModelPostbackInterface
      */
     public function handle($postback)
     {
-        $result = new \stdClass();
-        $result->type   = null;
-        $result->model  = null;
-        $result->update = null;
-
         if(is_string($postback))
         {
             $postback = json_decode($postback);
         }
+
+        $result = new \stdClass();
+        $result->postback = $postback;
+        $result->type     = null;
+        $result->model    = null;
+        $result->update   = null;
 
         list($postbackTypeEntity, $postbackTypeEvent) = explode('.', $postback->type);
 
@@ -46,6 +47,7 @@ class Postback implements ModelPostbackInterface
 
 
                 $result->update = new \stdClass();
+                $result->update->paymentData         = $data->order;
                 $result->update->newPaymentStatus    = null;
                 $result->update->eventDisplayMessage = null;
                 $result->update->paymentMethod       = null;
@@ -56,7 +58,7 @@ class Postback implements ModelPostbackInterface
                 $result->update->bankSlip            = null; //billet info will be stored into transaction event, case payment method equals "billet"
                 $result->update->pix                 = null; //pix info will be stored into transaction event, case payment method equals "pix"
 
-                
+
                 //----------------------------------------------------------------------------------------------------//
                 // Unhandled postbackTypes:
                 // - charge.created: the charge was create on create of transaction
