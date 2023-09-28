@@ -1,0 +1,23 @@
+{
+    "name": "2mindapps/laravel-pay-unity",
+    "description": "Unified Payment and Subscription Processing in Laravel.",
+    "keywords": ["gateway","payment","php","laravel"],
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.3 || 8.*",
+        "guzzlehttp/guzzle": "^7.8",
+        "respect/validation": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "MindApps\\LaravelPayUnity\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Daniel Barcelos",
+            "email": "daniel.barcelos@2mind.com.br"
+        }
+    ]
+}
