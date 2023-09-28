@@ -56,7 +56,21 @@ class Postback implements ModelPostbackInterface
                 $result->update->bankSlip            = null; //billet info will be stored into transaction event, case payment method equals "billet"
                 $result->update->pix                 = null; //pix info will be stored into transaction event, case payment method equals "pix"
 
-
+                
+                //----------------------------------------------------------------------------------------------------//
+                // Unhandled postbackTypes:
+                // - charge.created: the charge was create on create of transaction
+                // - charge.updated: the transaction updated by charge status changed
+                // - charge.underpaid: we do not have handling for this type of event
+                // - charge.overpaid: we do not have handling for this type of event
+                // - charge.partial_canceled: we do not have handling for this type of event
+                // - charge.chargedback: we do not have handling for this type of event
+                // - order.paid: not update transaction status, because the transaction status is updated by charged.paid
+                // - order.payment_failed: not update transaction status, because the transaction status is updated by
+                //   charged.payment_failed
+                // - order.canceled: not update transaction status, because the transaction status is updated by
+                //   charged.payment_failed
+                //----------------------------------------------------------------------------------------------------//
                 if($postback->type == 'charge.paid')
                 {
                     $result->type  = 'payment_update_status.paid';
