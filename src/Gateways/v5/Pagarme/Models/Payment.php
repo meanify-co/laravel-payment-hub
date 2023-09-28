@@ -54,7 +54,6 @@ class Payment implements ModelPaymentInterface
 
         //Card header
         $card = new \stdClass();
-        $card->statement_descriptor = isset($data->internal_code) ? substr($data->description,0,13) : '';
         $card->operation_type       = 'auth_and_capture';
         $card->installments         = $data->installments;
 
@@ -92,8 +91,7 @@ class Payment implements ModelPaymentInterface
         $payable->amount          = Helpers::removeMask($data->amount);
         $payable->credit_card     = $card;
         $payment->payments        = [$payable];
-
-
+        
         return [
             'method' => 'POST',
             'uri' => 'orders',
