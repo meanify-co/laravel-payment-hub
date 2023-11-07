@@ -39,6 +39,10 @@ trait Client
         {
             $arguments['form_params'] = $this->apiRequest->formParams;
         }
+        if(isset($this->apiRequest->queryParams))
+        {
+            $arguments['query_params'] = $this->apiRequest->queryParams;
+        }
 
         try
         {

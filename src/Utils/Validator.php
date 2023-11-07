@@ -172,19 +172,21 @@ class Validator
         }
         else
         {
+
             $rules = [
-                'number'                         => 'required|minlength:13|maxlength:19',
-                'holder_name'                    => 'required|minlength:6|maxlength:64',
-                'expiration_date'                => 'required|date:Y-m',
-                'cvv'                            => 'required|minlength:3|maxlength:4',
-                'billing_address.street'         => 'required',
-                'billing_address.street_number'  => 'required',
-                'billing_address.neighborhood'   => 'required',
+                'card_token'                     => 'nullable',
+                'number'                         => 'required_if:card_token,null|minlength:13|maxlength:19',
+                'holder_name'                    => 'required_if:card_token,null|minlength:6|maxlength:64',
+                'expiration_date'                => 'required_if:card_token,null|date:Y-m',
+                'cvv'                            => 'required_if:card_token,null|minlength:3|maxlength:4',
+                'billing_address.street'         => 'required_if:card_token,null',
+                'billing_address.street_number'  => 'required_if:card_token,null',
+                'billing_address.neighborhood'   => 'required_if:card_token,null',
                 'billing_address.complement'     => 'nullable',
-                'billing_address.zipcode'        => 'required|regex:zipcode!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
-                'billing_address.city'           => 'required',
-                'billing_address.state_code'     => 'required|regex:state_code!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
-                'billing_address.country_code'   => 'required|length:2|regex:country_code',
+                'billing_address.zipcode'        => 'required_if:card_token,null|regex:zipcode!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
+                'billing_address.city'           => 'required_if:card_token,null',
+                'billing_address.state_code'     => 'required_if:card_token,null|regex:state_code!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
+                'billing_address.country_code'   => 'required_if:card_token,null|length:2|regex:country_code',
             ];
 
             foreach($rules as $property => $validation)

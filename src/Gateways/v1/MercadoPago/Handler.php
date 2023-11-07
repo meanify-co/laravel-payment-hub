@@ -7,14 +7,14 @@ use MindApps\LaravelPayUnity\Interfaces\GatewayHandlerInterface;
 class Handler implements GatewayHandlerInterface
 {
     public static $validEnvironments = ['live','sandbox'];
-    public static $requiredParams = ['access_token'];
+    public static $requiredParams = ['public_key','access_token'];
 
     private $model;
     private $method;
 
     public function __construct($environment, $params)
     {
-        $this->baseUrl     = 'https://api.mercadopago.me/core/v1/';
+        $this->baseUrl     = 'https://api.mercadopago.com/v1/';
         $this->environment = $environment;
         $this->params      = $params;
     }
@@ -36,9 +36,9 @@ class Handler implements GatewayHandlerInterface
         $response->headers     = [
             'accept' => 'application/json',
             'content-type' => 'application/json',
-            'authorization' => 'Basic '.base64_encode($this->params['secret_key'].':'),
+            'authorization' => 'Bearer '.$this->params['access_token'],
         ];
-        $response->body = json_encode($result, 256);
+        $response->body = json_encode($result,256);
         return $response;
     }
 
