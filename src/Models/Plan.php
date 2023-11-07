@@ -37,7 +37,7 @@ class Plan implements ModelPlanInterface
      */
     public function create($data)
     {
-        $validator = Validator::planData($data);
+        $validator = Validator::planData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {
@@ -58,7 +58,7 @@ class Plan implements ModelPlanInterface
      */
     public function update($planId, $data)
     {
-        $validator = Validator::planData($data);
+        $validator = Validator::planData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {

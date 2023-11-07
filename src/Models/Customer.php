@@ -39,7 +39,7 @@ class Customer implements ModelCustomerInterface
      */
     public function create($data)
     {
-        $validator = Validator::customerData($data);
+        $validator = Validator::customerData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {
@@ -61,7 +61,7 @@ class Customer implements ModelCustomerInterface
      */
     public function update($customerId, $data)
     {
-        $validator = Validator::customerData($data);
+        $validator = Validator::customerData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {

@@ -37,7 +37,7 @@ class Subscription implements ModelSubscriptionInterface
      */
     public function create($data)
     {
-        $validator = Validator::subscriptionData($data);
+        $validator = Validator::subscriptionData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {
@@ -58,7 +58,7 @@ class Subscription implements ModelSubscriptionInterface
      */
     public function updateCreditCard($subscriptionId, $data)
     {
-        $validator = Validator::subscriptionCreditCardData($data);
+        $validator = Validator::subscriptionCreditCardData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {
@@ -79,7 +79,7 @@ class Subscription implements ModelSubscriptionInterface
      */
     public function updateMetadata($subscriptionId, $data)
     {
-        $validator = Validator::subscriptionMetadataData($data);
+        $validator = Validator::subscriptionMetadataData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {

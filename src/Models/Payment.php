@@ -38,7 +38,7 @@ class Payment implements ModelPaymentInterface
      */
     public function createCreditCardTransaction($data)
     {
-        $validator = Validator::paymentCreditCardData($data);
+        $validator = Validator::paymentCreditCardData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {
@@ -58,7 +58,7 @@ class Payment implements ModelPaymentInterface
      */
     public function createDebitCardTransaction($data)
     {
-        $validator = Validator::paymentDebitCardData($data);
+        $validator = Validator::paymentDebitCardData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {
@@ -78,7 +78,7 @@ class Payment implements ModelPaymentInterface
      */
     public function createPixTransaction($data)
     {
-        $validator = Validator::paymentPixData($data);
+        $validator = Validator::paymentPixData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {
@@ -98,7 +98,7 @@ class Payment implements ModelPaymentInterface
      */
     public function createBankSlipTransaction($data)
     {
-        $validator = Validator::paymentBankSlipData($data);
+        $validator = Validator::paymentBankSlipData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {
