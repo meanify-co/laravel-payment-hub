@@ -38,7 +38,7 @@ class Card implements ModelCardInterface
      */
     public function create($customerId, $data)
     {
-        $validator = Validator::cardData($data);
+        $validator = Validator::cardData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {
@@ -60,7 +60,7 @@ class Card implements ModelCardInterface
      */
     public function update($customerId, $cardId, $data)
     {
-        $validator = Validator::cardData($data);
+        $validator = Validator::cardData($data, $this->properties['gatewayActiveName']);
 
         if(!$validator['success'])
         {

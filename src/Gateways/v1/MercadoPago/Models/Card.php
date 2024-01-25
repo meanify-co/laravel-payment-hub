@@ -2,7 +2,9 @@
 
 namespace MindApps\LaravelPayUnity\Gateways\v1\MercadoPago\Models;
 
+use Carbon\Carbon;
 use MindApps\LaravelPayUnity\Interfaces\ModelCardInterface;
+use MindApps\LaravelPayUnity\Utils\Helpers;
 
 class Card implements ModelCardInterface
 {
@@ -13,7 +15,13 @@ class Card implements ModelCardInterface
      */
     public function get($customerId)
     {
-        throw new \Exception('Method Card::get not allowed for MercadoPago/v1');
+        $result = [];
+
+        return [
+            'method' => 'GET',
+            'uri' => 'customers/'.$customerId.'/cards',
+            'result' => $result
+        ];
     }
 
     /**
@@ -24,7 +32,14 @@ class Card implements ModelCardInterface
      */
     public function create($customerId, $data)
     {
-        throw new \Exception('Method Card::create not allowed for MercadoPago/v1');
+        $card = new \stdClass();
+        $card->token = $data->card_token;
+
+        return [
+            'method' => 'POST',
+            'uri' => 'customers/'.$customerId.'/cards',
+            'result' => $card
+        ];
     }
 
     /**
@@ -47,6 +62,12 @@ class Card implements ModelCardInterface
      */
     public function delete($customerId, $cardId)
     {
-        throw new \Exception('Method Card::delete not allowed for MercadoPago/v1');
+        $result = [];
+
+        return [
+            'method' => 'DELETE',
+            'uri' => 'customers/'.$customerId.'/cards/'.$cardId,
+            'result' => $result
+        ];
     }
 }

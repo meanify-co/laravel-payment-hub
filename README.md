@@ -32,12 +32,12 @@ composer require 2mindapps/laravel-pay-unity
 
 | Methods                                      | Pagar.me (v5) | Mercado Pago  (v1) |
 |----------------------------------------------|---------------|--------------------|
-| `card()->get()`                              | ✅             | ❌                  |
-| `card()->create()`                           | ✅             | ❌                  |
-| `card()->delete()`                           | ✅             | ❌                  |
-| `customer()->get()`                          | ✅             | ❌                  |
-| `customer()->create()`                       | ✅             | ❌                  |
-| `customer()->update()`                       | ✅             | ❌                  |
+| `card()->get()`                              | ✅             | ✅                  |
+| `card()->create()`                           | ✅             | ✅                  |
+| `card()->delete()`                           | ✅             | ✅                  |
+| `customer()->get()`                          | ✅             | ✅                  |
+| `customer()->create()`                       | ✅             | ✅                  |
+| `customer()->update()`                       | ✅             | ✅                  |
 | `payment()->get()`                           | ✅             | ❌                  |
 | `payment()->createCreditCardTransaction()`   | ✅             | ❌                  |
 | `payment()->createDebitCardTransaction()`    | ❌             | ❌                  |
