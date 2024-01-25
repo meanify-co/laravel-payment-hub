@@ -40,6 +40,10 @@ class Customer implements ModelCustomerInterface
      */
     public function create($data)
     {
+        //format document type
+        $data->document_type = strtoupper($data->document_type);
+        $data->document_type = $data->document_type == 'INTERNATIONAL' ? 'PASSPORT' : $data->document_type;
+
         //Customer main data
         $customer = new \stdClass();
         $customer->name          = $data->first_name.' '.$data->last_name;
@@ -47,7 +51,7 @@ class Customer implements ModelCustomerInterface
         $customer->birth_date    = !Helpers::checkStringIsNull($data->birth_date) ? Carbon::createFromFormat('Y-m-d',$data->birth_date)->format('m/d/Y') : null;
         $customer->type          = $data->document_type == 'cnpj' ? 'company' : 'individual';
         $customer->document      = Helpers::removeMask($data->document_number);
-        $customer->document_type = $data->document_type == 'cnpj' ? 'CNPJ' : (strtoupper($data->address->country_code) == 'BR' ? 'CPF' : 'PASSPORT');;
+        $customer->document_type = $data->document_type;
         $customer->code          = isset($data->internal_code) ? $data->internal_code : '';
 
         //Customer address
