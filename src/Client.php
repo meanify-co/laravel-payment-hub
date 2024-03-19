@@ -2,6 +2,8 @@
 
 namespace MindApps\LaravelPayUnity;
 
+use Illuminate\Support\Facades\Log;
+
 trait Client
 {
     use HandleResult;
@@ -52,6 +54,13 @@ trait Client
         }
         catch (\GuzzleHttp\Exception\RequestException $exception)
         {
+            Log::info('***********************************************');
+            Log::error((string) $exception->getResponse()->getBody());
+            Log::info($this->apiRequest->method);
+            Log::info($this->apiRequest->endpoint);
+            Log::info(json_encode($arguments,256));
+            Log::info('***********************************************');
+
             $success = false;
             $message = 'Error on request: '.((string) $exception->getResponse()->getBody());
             $result  = null;
