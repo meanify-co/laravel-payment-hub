@@ -55,28 +55,39 @@ class Customer implements ModelCustomerInterface
         $customer->code          = isset($data->internal_code) ? $data->internal_code : '';
 
         //Customer address
-        $customer->address  = new \stdClass();
-        $customer->address->line_1   = $data->address->street_number.','.$data->address->street.','.$data->address->neighborhood;;
-        $customer->address->line_2   = isset($data->address->complement) ? $data->address->complement : '';
-        $customer->address->zip_code = Helpers::removeMask($data->address->zipcode);
-        $customer->address->city     = $data->address->city;
-        $customer->address->state    = strtoupper($data->address->state_code);
-        $customer->address->country  = strtoupper($data->address->country_code);
+        if(isset($data->address))
+        {
+            $customer->address  = new \stdClass();
+            $customer->address->line_1   = $data->address->street_number.','.$data->address->street.','.$data->address->neighborhood;;
+            $customer->address->line_2   = isset($data->address->complement) ? $data->address->complement : '';
+            $customer->address->zip_code = Helpers::removeMask($data->address->zipcode);
+            $customer->address->city     = $data->address->city;
+            $customer->address->state    = strtoupper($data->address->state_code);
+            $customer->address->country  = strtoupper($data->address->country_code);
+        }
+        
 
         //Customer phone
-        $customer->phone    = new \stdClass();
-        $customer->phone->country_code = !Helpers::checkStringIsNull($data->phone->country_code) ? Helpers::removeMask($data->phone->country_code) : '';
-        $customer->phone->area_code    = Helpers::removeMask($data->phone->area_code);
-        $customer->phone->number       = Helpers::removeMask($data->phone->number);
-
-        if(Helpers::checkStringIsNull($customer->phone->country_code))
+        if(isset($data->phone))
         {
-            $customer->phone->country_code = $customer->address->country == 'BR' ? '55' : '';
+            $customer->phone    = new \stdClass();
+            $customer->phone->country_code = !Helpers::checkStringIsNull($data->phone->country_code) ? Helpers::removeMask($data->phone->country_code) : '';
+            $customer->phone->area_code    = Helpers::removeMask($data->phone->area_code);
+            $customer->phone->number       = Helpers::removeMask($data->phone->number);
         }
 
-        if(Helpers::checkStringIsNull($customer->phone->country_code) or Helpers::checkStringIsNull($customer->phone->area_code) or Helpers::checkStringIsNull($customer->phone->number))
+        //Format phone 
+        if(isset($data->address) and isset($data->phone))
         {
-            unset($customer->phone);
+            if(Helpers::checkStringIsNull($customer->phone->country_code))
+            {
+                $customer->phone->country_code = $customer->address->country == 'BR' ? '55' : '';
+            }
+
+            if(Helpers::checkStringIsNull($customer->phone->country_code) or Helpers::checkStringIsNull($customer->phone->area_code) or Helpers::checkStringIsNull($customer->phone->number))
+            {
+                unset($customer->phone);
+            }
         }
 
         if(isset($customer->phone))
