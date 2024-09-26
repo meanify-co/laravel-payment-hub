@@ -146,21 +146,33 @@ class Validator
                     'last_name'              => 'required|minlength:2|maxlength:64',
                     'email'                  => 'required|email',
                     'birth_date'             => 'nullable|date:Y-m-d',
-                    'document_type'          => 'required|expected:cnpj,cpf,passport,international',
-                    'document_number'        => 'required'.(isset($data->document_type) ? (in_array($data->document_type,['cnpj','cpf']) ? '|regex:cnpj,cpf' : '') : ''),
+                    'document_type'          => 'nullable|expected:cnpj,cpf,passport,international',
+                    'document_number'        => 'nullable'.(isset($data->document_type) ? (in_array($data->document_type,['cnpj','cpf']) ? '|regex:cnpj,cpf' : '') : ''),
                     'internal_code'          => 'nullable',
-                    'address.street'         => 'required',
-                    'address.street_number'  => 'required',
-                    'address.neighborhood'   => 'required',
-                    'address.complement'     => 'nullable',
-                    'address.zipcode'        => 'required|regex:zipcode!'.(isset($data->address->country_code) ? $data->address->country_code : ''),
-                    'address.city'           => 'required',
-                    'address.state_code'     => 'required|regex:state_code!'.(isset($data->address->country_code) ? $data->address->country_code : ''),
-                    'address.country_code'   => 'required|length:2|regex:country_code',
-                    'phone.country_code'     => 'required|regex:phone_country_code!'.(isset($data->address_country_code) ? $data->address->country_code : ''),
-                    'phone.area_code'        => 'required',
-                    'phone.number'           => 'required',
-                ];   
+                ];
+
+                if(isset($data->address))
+                {
+                    $rules = array_merge($rules, [
+                        'address.street'         => 'nullable',
+                        'address.street_number'  => 'nullable',
+                        'address.neighborhood'   => 'nullable',
+                        'address.complement'     => 'nullable',
+                        'address.zipcode'        => 'nullable|regex:zipcode!'.(isset($data->address->country_code) ? $data->address->country_code : ''),
+                        'address.city'           => 'nullable',
+                        'address.state_code'     => 'nullable|regex:state_code!'.(isset($data->address->country_code) ? $data->address->country_code : ''),
+                        'address.country_code'   => 'nullable|length:2|regex:country_code',
+                    ]);
+                }
+
+                if(isset($data->phone))
+                {
+                    $rules = array_merge($rules, [
+                        'phone.country_code'     => 'nullable|regex:phone_country_code!'.(isset($data->address_country_code) ? $data->address->country_code : ''),
+                        'phone.area_code'        => 'required',
+                        'phone.number'           => 'required',
+                    ]);
+                }
             }
 
             foreach($rules as $property => $validation)
@@ -217,15 +229,21 @@ class Validator
                     'holder_name'                    => 'required|minlength:6|maxlength:64',
                     'expiration_date'                => 'required|date:Y-m',
                     'cvv'                            => 'required|minlength:3|maxlength:4',
-                    'billing_address.street'         => 'required',
-                    'billing_address.street_number'  => 'required',
-                    'billing_address.neighborhood'   => 'required',
-                    'billing_address.complement'     => 'nullable',
-                    'billing_address.zipcode'        => 'required|regex:zipcode!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
-                    'billing_address.city'           => 'required',
-                    'billing_address.state_code'     => 'required|regex:state_code!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
-                    'billing_address.country_code'   => 'required|length:2|regex:country_code',
                 ];
+
+                if(isset($data->billing_address))
+                {
+                    $rules = array_merge($rules, [
+                        'billing_address.street'         => 'required',
+                        'billing_address.street_number'  => 'required',
+                        'billing_address.neighborhood'   => 'required',
+                        'billing_address.complement'     => 'nullable',
+                        'billing_address.zipcode'        => 'required|regex:zipcode!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
+                        'billing_address.city'           => 'required',
+                        'billing_address.state_code'     => 'required|regex:state_code!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
+                        'billing_address.country_code'   => 'required|length:2|regex:country_code',
+                    ]);
+                }
             }
             
 
@@ -529,15 +547,22 @@ class Validator
                     'holder_name'                    => 'required_if:gateway_card_id,null|minlength:6|maxlength:64',
                     'expiration_date'                => 'required_if:gateway_card_id,null|date:Y-m',
                     'cvv'                            => 'required_if:gateway_card_id,null|minlength:3|maxlength:4',
-                    'billing_address.street'         => 'required_if:gateway_card_id,null',
-                    'billing_address.street_number'  => 'required_if:gateway_card_id,null',
-                    'billing_address.neighborhood'   => 'required_if:gateway_card_id,null',
-                    'billing_address.complement'     => 'nullable',
-                    'billing_address.zipcode'        => 'required_if:gateway_card_id,null|regex:zipcode!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
-                    'billing_address.city'           => 'required_if:gateway_card_id,null',
-                    'billing_address.state_code'     => 'required_if:gateway_card_id,null|regex:state_code!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
-                    'billing_address.country_code'   => 'required_if:gateway_card_id,null|length:2|regex:country_code',
+
                 ];
+
+                if(isset($data->billing_address))
+                {
+                    $rules = array_merge($rules, [
+                        'billing_address.street'         => 'required_if:gateway_card_id,null',
+                        'billing_address.street_number'  => 'required_if:gateway_card_id,null',
+                        'billing_address.neighborhood'   => 'required_if:gateway_card_id,null',
+                        'billing_address.complement'     => 'nullable',
+                        'billing_address.zipcode'        => 'required_if:gateway_card_id,null|regex:zipcode!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
+                        'billing_address.city'           => 'required_if:gateway_card_id,null',
+                        'billing_address.state_code'     => 'required_if:gateway_card_id,null|regex:state_code!'.(isset($data->billing_address->country_code) ? $data->billing_address->country_code : ''),
+                        'billing_address.country_code'   => 'required_if:gateway_card_id,null|length:2|regex:country_code',
+                    ]);
+                }
             }
             
 
