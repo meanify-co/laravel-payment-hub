@@ -36,15 +36,18 @@ class Card implements ModelCardInterface
         $card->exp_month   = Carbon::createFromFormat('Y-m-d',$data->expiration_date.'-01')->format('m');
         $card->exp_year    = Carbon::createFromFormat('Y-m-d',$data->expiration_date.'-01')->format('Y');
         $card->cvv         = $data->cvv;
-
-        $billingAddress  = new \stdClass();
-        $billingAddress->line_1   = $data->billing_address->street_number.','.$data->billing_address->street.','.$data->billing_address->neighborhood;;
-        $billingAddress->line_2   = isset($data->billing_address->complement) ? $data->billing_address->complement : '';
-        $billingAddress->zip_code = Helpers::removeMask($data->billing_address->zipcode);
-        $billingAddress->city     = $data->billing_address->city;
-        $billingAddress->state    = strtoupper($data->billing_address->state_code);
-        $billingAddress->country  = strtoupper($data->billing_address->country_code);
-        $card->billing_address = $billingAddress;
+        
+        if(isset($data->billing_address))
+        {
+            $billingAddress  = new \stdClass();
+            $billingAddress->line_1   = $data->billing_address->street_number.','.$data->billing_address->street.','.$data->billing_address->neighborhood;;
+            $billingAddress->line_2   = isset($data->billing_address->complement) ? $data->billing_address->complement : '';
+            $billingAddress->zip_code = Helpers::removeMask($data->billing_address->zipcode);
+            $billingAddress->city     = $data->billing_address->city;
+            $billingAddress->state    = strtoupper($data->billing_address->state_code);
+            $billingAddress->country  = strtoupper($data->billing_address->country_code);
+            $card->billing_address = $billingAddress;
+        }
 
         return [
             'method' => 'POST',
