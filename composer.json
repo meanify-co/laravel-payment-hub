@@ -1,0 +1,40 @@
+{
+    "name": "meanify-co/laravel-payment-hub",
+    "description": "A PHP library for centralizing integrations with multiple payment gateways, providing a unified API for seamless transactions across platforms.",
+    "authors": [
+        {
+            "name": "Daniel Barcelos",
+            "email": "daniel@meanify.co"
+        }
+    ],
+    "keywords": [
+        "gateway",
+        "payment",
+        "php",
+        "laravel"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.3 || 8.*",
+        "guzzlehttp/guzzle": "^7.8",
+        "respect/validation": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Meanify\\LaravelPaymentHub\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Meanify\\LaravelPaymentHub\\Providers\\MeanifyLaravelPaymentHubServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php artisan package:discover"
+        ]
+    }
+}
