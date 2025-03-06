@@ -1,5 +1,5 @@
 {
-    "name": "2mindapps/laravel-pay-unity",
+    "name": "meanify-co/laravel-payment-hub",
     "description": "Unified Payment and Subscription Processing in Laravel.",
     "keywords": ["gateway","payment","php","laravel"],
     "type": "library",
@@ -11,13 +11,13 @@
     },
     "autoload": {
         "psr-4": {
-            "MindApps\\LaravelPayUnity\\": "src/"
+            "Meanify\\LaravelPaymentHub\\": "src/"
         }
     },
     "authors": [
         {
             "name": "Daniel Barcelos",
-            "email": "daniel.barcelos@2mind.com.br"
+            "email": "daniel@meanify.co"
         }
     ]
 }
