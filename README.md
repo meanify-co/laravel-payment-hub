@@ -1,19 +1,19 @@
 <p align="center">
-  <a href="https://2mind.com.br">
-    <img src="https://2mind.com.br/assets/img/logo/logo_color_vertical_text.png" width="200" alt="2mind logo" />
+  <a href="https://www.meanify.co?from=github&lib=laravel-payment-hub">
+    <img src="https://meanify.co/assets/img/logo/png/meanify_color_dark_horizontal_02.png" width="200" alt="Meanify Logo" />
   </a>
 </p>
 
 
-# `PayUnity`
-## PHP library for centralizing payment gateway integrations, making API calls in a unified manner.
+# `Laravel Payment Hub`
+## A PHP library for centralizing integrations with multiple payment gateways, providing a unified API for seamless transactions across platforms.
 
 ### Installation:
 
 Install this package with composer:
 
 ~~~
-composer require 2mindapps/laravel-pay-unity
+composer require meanify-co/laravel-payment-hub
 ~~~
 
 ### Feature comparison:
@@ -69,7 +69,7 @@ composer require 2mindapps/laravel-pay-unity
 ~~~
 # Example instance for Pagar.me
 
-$handler = new \MindApps\LaravelPayUnity\Factory('pagarme','v5','sandbox', ['secret_key' => 'MY_SCRET_KEY']);
+$handler = new \Meanify\LaravelPaymentHub\Factory('pagarme','v5','sandbox', ['secret_key' => 'MY_SCRET_KEY']);
 ~~~
 
 2. Call the method according to the feature comparison table.
@@ -106,4 +106,4 @@ $handler->customer()
   
 ~~~
 
-Other examples is availables in [Tests](https://github.com/2mindApps/laravel-pay-unity/tree/master/tests)
+Other examples is availables in [Tests](https://github.com/meanify-co/laravel-payment-hub/tree/master/tests)
