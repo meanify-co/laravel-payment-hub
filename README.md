@@ -5,10 +5,10 @@
 </p>
 
 
-# `Laravel Payment Hub`
-## A PHP library for centralizing integrations with multiple payment gateways, providing a unified API for seamless transactions across platforms.
+# Laravel Payment Hub
+A PHP library for centralizing integrations with multiple payment gateways, providing a unified API for seamless transactions across platforms.
 
-### Installation:
+## Installation:
 
 Install this package with composer:
 
