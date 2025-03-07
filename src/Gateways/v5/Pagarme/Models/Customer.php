@@ -3,11 +3,25 @@
 namespace Meanify\LaravelPaymentHub\Gateways\v5\Pagarme\Models;
 
 use Carbon\Carbon;
+use Meanify\LaravelPaymentHub\Constants;
 use Meanify\LaravelPaymentHub\Interfaces\ModelCustomerInterface;
 use Meanify\LaravelPaymentHub\Utils\Helpers;
 
 class Customer implements ModelCustomerInterface
 {
+    /**
+     * @param $customerId
+     * @return array
+     */
+    public function find($customerId)
+    {
+        return [
+            'method' => Constants::$REQUEST_METHOD_GET,
+            'uri' => 'customers/'.$customerId,
+            'result' => []
+        ];
+    }
+
     /**
      * @param $customerInternalCode
      * @param $customerEmail
@@ -28,7 +42,7 @@ class Customer implements ModelCustomerInterface
         }
 
         return [
-            'method' => 'GET',
+            'method' => Constants::$REQUEST_METHOD_GET,
             'uri' => 'customers'.($params == '' ? '' : ('?'.substr($params,1))),
             'result' => []
         ];
@@ -101,7 +115,7 @@ class Customer implements ModelCustomerInterface
         }
 
         return [
-            'method' => 'POST',
+            'method' => Constants::$REQUEST_METHOD_POST,
             'uri' => 'customers',
             'result' => $customer
         ];

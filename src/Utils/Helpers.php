@@ -6,6 +6,7 @@ class Helpers
 {
     public static $namespacePrefix = '\Meanify\LaravelPaymentHub';
 
+
     /**
      * @param $gatewayActive
      * @param $version

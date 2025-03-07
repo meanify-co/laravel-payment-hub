@@ -4,6 +4,8 @@ namespace Meanify\LaravelPaymentHub\Interfaces;
 
 interface ModelCardInterface
 {
+    public function find($customerId, $cardId);
+
     public function get($customerId);
 
     public function create($customerId, $data);

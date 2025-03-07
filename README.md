@@ -33,12 +33,12 @@ composer require meanify-co/laravel-payment-hub
 
 | Methods                                      | Mercado Pago  (v1)  | Pagar.me (v5) | 
 |----------------------------------------------|---------------------|---------------|
-| `card()->get()`                              | ❌                   | ❌             |
-| `card()->create()`                           | ❌                   | ❌             |
+| `card()->get()`                              | ✅                   | ❌             |
+| `card()->create()`                           | ✅                   | ❌             |
 | `card()->delete()`                           | ❌                   | ❌             |
-| `customer()->get()`                          | ❌                   | ❌             |
-| `customer()->create()`                       | ❌                   | ❌             |
-| `customer()->update()`                       | ❌                   | ❌             |
+| `customer()->get()`                          | ✅                   | ❌             |
+| `customer()->create()`                       | ✅                   | ❌             |
+| `customer()->update()`                       | ✅                   | ❌             |
 | `payment()->get()`                           | ❌                   | ❌             |
 | `payment()->createCreditCardTransaction()`   | ❌                   | ❌             |
 | `payment()->createDebitCardTransaction()`    | ❌                   | ❌             |
@@ -60,11 +60,11 @@ composer require meanify-co/laravel-payment-hub
 ~~~
 # Example instance for MercadoPago
 
-$handler = new \Meanify\LaravelPaymentHub\Factory('mercado-pago','v5','sandbox', ['secret_key' => 'MY_SCRET_KEY']);
+$handler = new \Meanify\LaravelPaymentHub\Factory('mercado-pago','v1','sandbox', ['secret_key' => 'MY_SCRET_KEY']);
 
 //or
 
-$handler = meanifyPaymentHub('mercado-pago','v5','sandbox', ['secret_key' => 'MY_SCRET_KEY']);
+$handler = meanifyPaymentHub('mercado-pago','v1','sandbox', ['secret_key' => 'MY_SCRET_KEY']);
 
 
 ~~~

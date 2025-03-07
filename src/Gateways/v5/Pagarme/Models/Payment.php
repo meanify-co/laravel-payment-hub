@@ -3,6 +3,7 @@
 namespace Meanify\LaravelPaymentHub\Gateways\v5\Pagarme\Models;
 
 use Carbon\Carbon;
+use Meanify\LaravelPaymentHub\Constants;
 use Meanify\LaravelPaymentHub\Interfaces\ModelPaymentInterface;
 use Meanify\LaravelPaymentHub\Utils\Helpers;
 use multitypetest\model\Car;
@@ -18,7 +19,7 @@ class Payment implements ModelPaymentInterface
         $result = [];
 
         return [
-            'method' => 'GET',
+            'method' => Constants::$REQUEST_METHOD_GET,
             'uri' => 'orders/'.$paymentId,
             'result' => $result
         ];
@@ -93,7 +94,7 @@ class Payment implements ModelPaymentInterface
         $payment->payments        = [$payable];
         
         return [
-            'method' => 'POST',
+            'method' => Constants::$REQUEST_METHOD_POST,
             'uri' => 'orders',
             'result' => $payment
         ];
@@ -149,7 +150,7 @@ class Payment implements ModelPaymentInterface
         $payment->payments        = [$payable];
 
         return [
-            'method' => 'POST',
+            'method' => Constants::$REQUEST_METHOD_POST,
             'uri' => 'orders',
             'result' => $payment
         ];
@@ -189,7 +190,7 @@ class Payment implements ModelPaymentInterface
         }
 
         return [
-            'method' => 'DELETE',
+            'method' => Constants::$REQUEST_METHOD_DELETE,
             'uri' => "charges/$lastCharge->id",
             'result' => []
         ];
@@ -217,7 +218,7 @@ class Payment implements ModelPaymentInterface
         $lastChargeId = $paymentData->charges[count($charges) - 1]->id;
 
         return [
-            'method' => 'GET',
+            'method' => Constants::$REQUEST_METHOD_GET,
             'uri' => "payables?charge_id=$lastChargeId",
             'result' => []
         ];

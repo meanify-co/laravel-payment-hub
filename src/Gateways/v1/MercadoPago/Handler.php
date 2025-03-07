@@ -7,7 +7,7 @@ use Meanify\LaravelPaymentHub\Interfaces\GatewayHandlerInterface;
 class Handler implements GatewayHandlerInterface
 {
     public static $validEnvironments = ['live','sandbox'];
-    public static $requiredParams = ['public_key','access_token'];
+    public static $requiredParams    = ['public_key','access_token'];
 
     private $model;
     private $method;
@@ -23,9 +23,10 @@ class Handler implements GatewayHandlerInterface
      * @param $method
      * @param $uri
      * @param $result
+     * @param $extraHeaders
      * @return \stdClass
      */
-    public function formatRequest($method, $uri, $result = [])
+    public function formatRequest($method, $uri, $result = [], $extraHeaders = [])
     {
         $response = new \stdClass();
         $response->baseUrl     = $this->baseUrl;
@@ -33,11 +34,11 @@ class Handler implements GatewayHandlerInterface
         $response->endpoint    = $response->baseUrl . $response->uri;
         $response->method      = strtoupper($method);
         $response->environment = $this->environment;
-        $response->headers     = [
+        $response->headers     = array_merge([
             'accept' => 'application/json',
             'content-type' => 'application/json',
             'authorization' => 'Bearer '.$this->params['access_token'],
-        ];
+        ], $extraHeaders);
         $response->body = json_encode($result,256);
         return $response;
     }
@@ -68,7 +69,7 @@ class Handler implements GatewayHandlerInterface
 
         try
         {
-            return $this->formatRequest($response['method'], $response['uri'], $response['result']);
+            return $this->formatRequest($response['method'], $response['uri'], $response['result'], $response['headers'] ?? []);
         }
         catch (\Throwable $e)
         {

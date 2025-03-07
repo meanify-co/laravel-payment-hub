@@ -2,16 +2,10 @@
 
 namespace Meanify\LaravelPaymentHub\Utils;
 
+use Meanify\LaravelPaymentHub\Constants;
+
 class Validator
 {
-    /**
-     * @var string[]
-     */
-    public static $validGateways = [
-        'mercado-pago' => 'MercadoPago',
-        'mercadopago'  => 'MercadoPago',
-        'pagarme'      => 'Pagarme',
-    ];
 
     /**
      * @param $gatewayActive
@@ -20,12 +14,12 @@ class Validator
      */
     public static function gatewayActive($gatewayActive)
     {
-        if(!array_key_exists($gatewayActive, self::$validGateways))
+        if(!array_key_exists($gatewayActive, Constants::$VALID_GATEWAYS))
         {
             throw new \Exception("Gateway $gatewayActive is not valid");
         }
 
-        return self::$validGateways[$gatewayActive];
+        return Constants::$VALID_GATEWAYS[$gatewayActive];
     }
 
     /**
@@ -97,6 +91,41 @@ class Validator
         return $gatewayParams;
     }
 
+
+    /**
+     * @param $class
+     * @param $functionName
+     * @param $currentInstanceProperties
+     * @return bool
+     */
+    public static function checkIfNonInterfaceFunctionIsActiveForGateway($class, $functionName, $currentInstanceProperties): bool
+    {
+        $classParts  = explode('\\', $class);
+
+        $className   = array_pop($classParts);
+
+        $functionKey = $className.'::'.$functionName;
+
+        if(!array_key_exists($functionKey, Constants::$NON_INTERFACE_FUNCTIONS_FOR_GATEWAYS))
+        {
+            throw new \Exception("Function $functionKey is not valid");
+        }
+        else
+        {
+            $gatewayNameAndVersion = $currentInstanceProperties['gatewayActiveName'].'@'.$currentInstanceProperties['gatewayVersion'];
+
+            if(!in_array($gatewayNameAndVersion, Constants::$NON_INTERFACE_FUNCTIONS_FOR_GATEWAYS[$functionKey]))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
+
+
     /**
      * @param $data
      * @param $gateway
@@ -116,7 +145,7 @@ class Validator
         {
             $rules = [];
 
-            if($gateway == 'MercadoPago')
+            if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 $rules = [
                     'email'                  => 'required|email',
@@ -137,7 +166,7 @@ class Validator
                     'phone.number'           => 'nullable',
                 ];
             }
-            elseif($gateway == 'Pagarme')
+            elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
                 $rules = [
                     'first_name'             => 'required|minlength:2|maxlength:64',
@@ -214,13 +243,20 @@ class Validator
         {
             $rules = [];
 
-            if($gateway == 'MercadoPago')
+            if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 $rules = [
-                    'card_token' => 'required',
+                    'number'                    => 'required|minlength:13|maxlength:19',
+                    'holder_name'               => 'required|minlength:6|maxlength:64',
+                    'holder_document_type'      => 'required|expected:cnpj,cpf',
+                    'holder_document_number'    => 'required|regex:cnpj,cpf',
+                    'expiration_date'           => 'required|date:Y-m',
+                    'cvv'                       => 'required|minlength:3|maxlength:4',
+                    'brand'                     => 'required|minlength:3|maxlength:64',
+                    'card_type'                 => 'required|expected:credit_card,debit_card',
                 ];
             }
-            elseif($gateway == 'Pagarme')
+            elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
                 $rules = [
                     'number'                         => 'required|minlength:13|maxlength:19',
@@ -286,7 +322,7 @@ class Validator
         {
             $rules = [];
 
-            if($gateway == 'MercadoPago')
+            if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 $rules = [
                     'name'              => 'required',
@@ -299,7 +335,7 @@ class Validator
                     'trial_period_days' => 'integer',
                 ];
             }
-            elseif($gateway == 'Pagarme')
+            elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
                 $rules = [
                     'name'              => 'required',
@@ -356,7 +392,7 @@ class Validator
         {
             $rules = [];
 
-            if($gateway == 'MercadoPago')
+            if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 $rules = [
                     'internal_code'         => 'nullable',
@@ -365,7 +401,7 @@ class Validator
                     'gateway_card_id'       => 'required',
                 ];
             }
-            elseif($gateway == 'Pagarme')
+            elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
                 $rules = [
                     'internal_code'         => 'nullable',
@@ -416,13 +452,13 @@ class Validator
         {
             $rules = [];
 
-            if($gateway == 'MercadoPago')
+            if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 $rules = [
                     'gateway_card_id' => 'required',
                 ];
             }
-            elseif($gateway == 'Pagarme')
+            elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
                 $rules = [
                     'gateway_card_id' => 'required',
@@ -471,13 +507,13 @@ class Validator
         {
             $rules = [];
 
-            if($gateway == 'MercadoPago')
+            if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 $rules = [
                     'metadata' => 'required|array',
                 ];
             }
-            elseif($gateway == 'Pagarme')
+            elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
 
                 $rules = [
@@ -527,11 +563,23 @@ class Validator
         {
             $rules = [];
 
-            if($gateway == 'MercadoPago')
+            if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
-                //
+                $rules = [
+                    'internal_code'                  => 'required',
+                    'binary_mode'                    => 'nullable|boolean',
+                    'description'                    => 'nullable',
+                    'statement_descriptor'           => 'nullable|minlength:3|maxlength:20',
+                    'gateway_customer_id'            => 'required',
+                    'gateway_customer_email'         => 'required|email',
+                    'amount'                         => 'required|decimal:10,2',
+                    'installments'                   => 'required|integer',
+                    'metadata'                       => 'array',
+                    'gateway_card_id'                => 'required',
+                    'webhook'                        => 'nullable|url',
+                ];
             }
-            elseif($gateway == 'Pagarme')
+            elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
                 $rules = [
                     'internal_code'                  => 'required',
@@ -605,11 +653,11 @@ class Validator
         {
             $rules = [];
 
-            if($gateway == 'MercadoPago')
+            if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 //
             }
-            elseif($gateway == 'Pagarme')
+            elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
                 //
             }
@@ -655,7 +703,7 @@ class Validator
         {
             $rules = [];
 
-            if($gateway == 'MercadoPago')
+            if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 $rules = [
                     'internal_code'         => 'required',
@@ -666,7 +714,7 @@ class Validator
                     'metadata'              => 'array',
                 ];
             }
-            elseif($gateway == 'Pagarme')
+            elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
                 $rules = [
                     'internal_code'         => 'required',
@@ -720,11 +768,11 @@ class Validator
         {
             $rules = [];
 
-            if($gateway == 'MercadoPago')
+            if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 //
             }
-            elseif($gateway == 'Pagarme')
+            elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
                 //
             }

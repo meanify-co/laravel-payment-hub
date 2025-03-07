@@ -3,6 +3,7 @@
 namespace Meanify\LaravelPaymentHub\Gateways\v1\MercadoPago\Models;
 
 use Carbon\Carbon;
+use Meanify\LaravelPaymentHub\Constants;
 use Meanify\LaravelPaymentHub\Interfaces\ModelCustomerInterface;
 use Meanify\LaravelPaymentHub\Utils\Helpers;
 
@@ -10,15 +11,13 @@ class Customer implements ModelCustomerInterface
 {
     /**
      * @param $customerId
-     * @param $customerEmail
-     * @param $listOrUnique
      * @return mixed
      * @throws \Exception
      */
     public function find($customerId)
     {
         return [
-            'method' => 'GET',
+            'method' => Constants::$REQUEST_METHOD_GET,
             'uri' => 'customers/'.$customerId,
             'result' => []
         ];
@@ -46,7 +45,7 @@ class Customer implements ModelCustomerInterface
         }
 
         return [
-            'method' => 'GET',
+            'method' => Constants::$REQUEST_METHOD_GET,
             'uri' => 'customers/search'.($params == '' ? '' : ('?'.substr($params,1))),
             'result' => []
         ];
@@ -98,7 +97,7 @@ class Customer implements ModelCustomerInterface
         }
 
         return [
-            'method' => 'POST',
+            'method' => Constants::$REQUEST_METHOD_POST,
             'uri' => 'customers',
             'result' => $customer
         ];
@@ -150,7 +149,7 @@ class Customer implements ModelCustomerInterface
         }
 
         return [
-            'method' => 'PUT',
+            'method' => Constants::$REQUEST_METHOD_PUT,
             'uri' => 'customers/'.$customerId,
             'result' => $customer
         ];

@@ -3,11 +3,28 @@
 namespace Meanify\LaravelPaymentHub\Gateways\v5\Pagarme\Models;
 
 use Carbon\Carbon;
+use Meanify\LaravelPaymentHub\Constants;
 use Meanify\LaravelPaymentHub\Interfaces\ModelCardInterface;
 use Meanify\LaravelPaymentHub\Utils\Helpers;
 
 class Card implements ModelCardInterface
 {
+    /**
+     * @param $customerId
+     * @param $cardId
+     * @return array
+     */
+    public function find($customerId, $cardId)
+    {
+        $result = [];
+
+        return [
+            'method' => Constants::$REQUEST_METHOD_GET,
+            'uri' => 'customers/'.$customerId.'/cards/'.$cardId,
+            'result' => $result
+        ];
+    }
+
     /**
      * @param $customerId
      * @return array
@@ -17,7 +34,7 @@ class Card implements ModelCardInterface
         $result = [];
 
         return [
-            'method' => 'GET',
+            'method' => Constants::$REQUEST_METHOD_GET,
             'uri' => 'customers/'.$customerId.'/cards',
             'result' => $result
         ];
@@ -50,7 +67,7 @@ class Card implements ModelCardInterface
         }
 
         return [
-            'method' => 'POST',
+            'method' => Constants::$REQUEST_METHOD_POST,
             'uri' => 'customers/'.$customerId.'/cards',
             'result' => $card
         ];
@@ -77,7 +94,7 @@ class Card implements ModelCardInterface
         $result = [];
 
         return [
-            'method' => 'DELETE',
+            'method' => Constants::$REQUEST_METHOD_DELETE,
             'uri' => 'customers/'.$customerId.'/cards/'.$cardId,
             'result' => $result
         ];

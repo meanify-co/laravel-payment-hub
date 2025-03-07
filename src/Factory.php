@@ -4,7 +4,6 @@ namespace Meanify\LaravelPaymentHub;
 
 use Meanify\LaravelPaymentHub\Utils\Helpers;
 use Meanify\LaravelPaymentHub\Utils\Validator;
-use Meanify\LaravelPaymentHub\Utils\Formatter;
 
 class Factory
 {

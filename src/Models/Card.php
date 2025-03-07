@@ -3,6 +3,7 @@
 namespace Meanify\LaravelPaymentHub\Models;
 
 use Meanify\LaravelPaymentHub\Client;
+use Meanify\LaravelPaymentHub\Constants;
 use Meanify\LaravelPaymentHub\HandleResult;
 use Meanify\LaravelPaymentHub\Interfaces\ModelCardInterface;
 use Meanify\LaravelPaymentHub\Utils\Validator;
@@ -20,6 +21,20 @@ class Card implements ModelCardInterface
 
     /**
      * @param $customerId
+     * @param $cardId
+     * @return $this
+     */
+    public function find($customerId, $cardId)
+    {
+        $apiRequest = $this->properties['gatewayInstance']->setMethod('Card','find')->call($customerId, $cardId);
+
+        $this->setApiRequest($apiRequest);
+
+        return $this;
+    }
+
+    /**
+     * @param $customerId
      * @return $this
      */
     public function get($customerId)
@@ -32,9 +47,13 @@ class Card implements ModelCardInterface
     }
 
     /**
+     * @notes For MercadoPago request, is required create card_token from card data.
+     *        Therefore, if gateway is MercadoPago we call $this->generateCardToken
+     *        before create a credit card with sent params
      * @param $customerId
      * @param $data
      * @return $this
+     * @throws \Exception
      */
     public function create($customerId, $data)
     {
@@ -43,6 +62,19 @@ class Card implements ModelCardInterface
         if(!$validator['success'])
         {
             throw new \Exception('Data properties has errors: '.$validator['errors']);
+        }
+
+        if($this->properties['gatewayActiveName'] == Constants::$MERCADO_PAGO_GATEWAY_NAME)
+        {
+            $cardTokenRequest  = $this->generateCardToken($data);
+            $cardTokenResponse = $cardTokenRequest->send();
+
+            if(!$cardTokenResponse['success'])
+            {
+                throw new \Exception($cardTokenResponse['message']);
+            }
+
+            $data->card_token = $cardTokenResponse['result']->id;
         }
 
         $apiRequest = $this->properties['gatewayInstance']->setMethod('Card','create')->call($customerId, $data);
@@ -82,6 +114,31 @@ class Card implements ModelCardInterface
     public function delete($customerId, $cardId)
     {
         $apiRequest = $this->properties['gatewayInstance']->setMethod('Card','delete')->call($customerId, $cardId);
+
+        $this->setApiRequest($apiRequest);
+
+        return $this;
+    }
+
+    /**
+     * @param $data
+     * @return $this
+     */
+    private function generateCardToken($data)
+    {
+        if(!Validator::checkIfNonInterfaceFunctionIsActiveForGateway(__CLASS__, __FUNCTION__, $this->properties))
+        {
+            throw new \Exception('This function is not active for '.$this->properties['gatewayActiveName'].' in version '.$this->properties['gatewayVersion']);
+        }
+
+        $validator = Validator::cardData($data, $this->properties['gatewayActiveName']);
+
+        if(!$validator['success'])
+        {
+            throw new \Exception('Data properties has errors: '.$validator['errors']);
+        }
+
+        $apiRequest = $this->properties['gatewayInstance']->setMethod('Card','generateCardToken')->call($data);
 
         $this->setApiRequest($apiRequest);
 

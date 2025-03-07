@@ -239,6 +239,40 @@ class ValidatorRules
     /**
      * @param $object
      * @param $value
+     * @return bool
+     */
+    public static function url($object, $value)
+    {
+        $success = true;
+
+        if(!respect::url()->validate($value))
+        {
+            $success = false;
+        }
+
+        return $success;
+    }
+
+    /**
+     * @param $object
+     * @param $value
+     * @return bool
+     */
+    public static function boolean($object, $value)
+    {
+        $success = true;
+
+        if(!is_bool($value))
+        {
+            $success = false;
+        }
+
+        return $success;
+    }
+
+    /**
+     * @param $object
+     * @param $value
      * @param $length
      * @return bool
      */
