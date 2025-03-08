@@ -246,15 +246,19 @@ class Validator
             if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 $rules = [
-                    'number'                    => 'required|minlength:13|maxlength:19',
-                    'holder_name'               => 'required|minlength:6|maxlength:64',
-                    'holder_document_type'      => 'required|expected:cnpj,cpf',
-                    'holder_document_number'    => 'required|regex:cnpj,cpf',
-                    'expiration_date'           => 'required|date:Y-m',
-                    'cvv'                       => 'required|minlength:3|maxlength:4',
-                    'brand'                     => 'required|minlength:3|maxlength:64',
-                    'card_type'                 => 'required|expected:credit_card,debit_card',
+                    'card_token' => 'required',
                 ];
+
+                //$rules = [
+                //    'number'                    => 'required|minlength:13|maxlength:19',
+                //    'holder_name'               => 'required|minlength:6|maxlength:64',
+                //    'holder_document_type'      => 'required|expected:cnpj,cpf',
+                //    'holder_document_number'    => 'required|regex:cnpj,cpf',
+                //    'expiration_date'           => 'required|date:Y-m',
+                //    'cvv'                       => 'required|minlength:3|maxlength:4',
+                //    'brand'                     => 'required|minlength:3|maxlength:64',
+                //    'card_type'                 => 'required|expected:credit_card,debit_card',
+                //];
             }
             elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
@@ -566,17 +570,16 @@ class Validator
             if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 $rules = [
-                    'internal_code'                  => 'required',
-                    'binary_mode'                    => 'nullable|boolean',
-                    'description'                    => 'nullable',
-                    'statement_descriptor'           => 'nullable|minlength:3|maxlength:20',
-                    'gateway_customer_id'            => 'required',
-                    'gateway_customer_email'         => 'required|email',
-                    'amount'                         => 'required|decimal:10,2',
-                    'installments'                   => 'required|integer',
-                    'metadata'                       => 'array',
-                    'gateway_card_id'                => 'required',
-                    'webhook'                        => 'nullable|url',
+                    'internal_code'          => 'required',
+                    'binary_mode'            => 'nullable|boolean',
+                    'description'            => 'nullable',
+                    'statement_descriptor'   => 'nullable|minlength:3|maxlength:20',
+                    'amount'                 => 'required|decimal:10,2',
+                    'installments'           => 'required|integer',
+                    'metadata'               => 'array',
+                    'webhook'                => 'nullable|url',
+                    'gateway_customer_id'    => 'required',
+                    'gateway_card_token'     => 'required',
                 ];
             }
             elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)

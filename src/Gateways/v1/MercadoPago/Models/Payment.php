@@ -31,14 +31,13 @@ class Payment implements ModelPaymentInterface
         $payment->description           = $data->description ?? null;
         $payment->statement_descriptor  = $data->statement_descriptor ?? null;
         $payment->notification_url      = $data->webhook ?? null;
-        $payment->token                 = $data->gateway_card_id;
+        $payment->token                 = $data->gateway_card_token;
         $payment->transaction_amount    = (float) $data->amount;
         $payment->installments          = $data->installments;
 
         //Payer
         $payer = new \stdClass();
         $payer->id      = $data->gateway_customer_id;
-        $payer->email   = $data->gateway_customer_email;
         $payment->payer = $payer;
 
         //Metadata

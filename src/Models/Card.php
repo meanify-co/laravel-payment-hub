@@ -47,9 +47,6 @@ class Card implements ModelCardInterface
     }
 
     /**
-     * @notes For MercadoPago request, is required create card_token from card data.
-     *        Therefore, if gateway is MercadoPago we call $this->generateCardToken
-     *        before create a credit card with sent params
      * @param $customerId
      * @param $data
      * @return $this
@@ -62,19 +59,6 @@ class Card implements ModelCardInterface
         if(!$validator['success'])
         {
             throw new \Exception('Data properties has errors: '.$validator['errors']);
-        }
-
-        if($this->properties['gatewayActiveName'] == Constants::$MERCADO_PAGO_GATEWAY_NAME)
-        {
-            $cardTokenRequest  = $this->generateCardToken($data);
-            $cardTokenResponse = $cardTokenRequest->send();
-
-            if(!$cardTokenResponse['success'])
-            {
-                throw new \Exception($cardTokenResponse['message']);
-            }
-
-            $data->card_token = $cardTokenResponse['result']->id;
         }
 
         $apiRequest = $this->properties['gatewayInstance']->setMethod('Card','create')->call($customerId, $data);
@@ -124,7 +108,7 @@ class Card implements ModelCardInterface
      * @param $data
      * @return $this
      */
-    private function generateCardToken($data)
+    public function generateCardToken($data)
     {
         if(!Validator::checkIfNonInterfaceFunctionIsActiveForGateway(__CLASS__, __FUNCTION__, $this->properties))
         {

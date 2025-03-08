@@ -3,6 +3,7 @@
 namespace Meanify\LaravelPaymentHub\Models;
 
 use Meanify\LaravelPaymentHub\Client;
+use Meanify\LaravelPaymentHub\Constants;
 use Meanify\LaravelPaymentHub\HandleResult;
 use Meanify\LaravelPaymentHub\Interfaces\ModelPaymentInterface;
 use Meanify\LaravelPaymentHub\Utils\Helpers;
@@ -35,6 +36,7 @@ class Payment implements ModelPaymentInterface
     /**
      * @param $data
      * @return $this
+     * @throws \Exception
      */
     public function createCreditCardTransaction($data)
     {

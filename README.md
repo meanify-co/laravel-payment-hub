@@ -35,12 +35,12 @@ composer require meanify-co/laravel-payment-hub
 |----------------------------------------------|---------------------|---------------|
 | `card()->get()`                              | ✅                   | ❌             |
 | `card()->create()`                           | ✅                   | ❌             |
-| `card()->delete()`                           | ❌                   | ❌             |
+| `card()->delete()`                           | ✅                   | ❌             |
 | `customer()->get()`                          | ✅                   | ❌             |
 | `customer()->create()`                       | ✅                   | ❌             |
 | `customer()->update()`                       | ✅                   | ❌             |
-| `payment()->get()`                           | ❌                   | ❌             |
-| `payment()->createCreditCardTransaction()`   | ❌                   | ❌             |
+| `payment()->get()`                           | ✅                   | ❌             |
+| `payment()->createCreditCardTransaction()`   | ✅                   | ❌             |
 | `payment()->createDebitCardTransaction()`    | ❌                   | ❌             |
 | `payment()->createBankSlipTransaction()`     | ❌                   | ❌             |
 | `payment()->createPixTransaction()`          | ❌                   | ❌             |
@@ -52,6 +52,16 @@ composer require meanify-co/laravel-payment-hub
 
 
 
+## Important notes :rotating_light:
+
+### For MercadoPago integration:
+For every request to MercadoPago involving a credit card (whether for creation, update, or transaction),
+it is essential to generate a token that represents the card's details.
+This token is used to either save the card in the customer's wallet or to process online payments.
+The token can be generated from the full card details or, alternatively, using the card's ID (ID from MercadoPago).
+If using the card ID, the card's security code (CVV) must also be provided to ensure the transaction's security.
+
+-----
 ### Basic usage: 
 
 1. Instantiate the factory class by providing parameters such as the preferred gateway, gateway version, account environment and additional data (such as access token or secret key).
