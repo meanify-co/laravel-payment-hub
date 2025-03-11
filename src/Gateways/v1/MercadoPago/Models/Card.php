@@ -17,21 +17,30 @@ class Card implements ModelCardInterface
      */
     public function generateCardToken($data)
     {
-        $holder = new \stdClass();
-        $identification         = new \stdClass();
-        $identification->type   = strtoupper($data->holder_document_type);
-        $identification->number = Helpers::removeMask($data->holder_document_number);
-        $holder->identification = $identification;
-        $holder->name           = $data->holder_name ?? null;
+        if(isset($data->card_id))
+        {
+            $card = new \stdClass();
+            $card->card_id       = $data->card_id;
+            $card->security_code = $data->cvv;
+        }
+        else
+        {
+            $holder = new \stdClass();
+            $identification         = new \stdClass();
+            $identification->type   = strtoupper($data->holder_document_type);
+            $identification->number = Helpers::removeMask($data->holder_document_number);
+            $holder->identification = $identification;
+            $holder->name           = $data->holder_name ?? null;
 
-        $card = new \stdClass();
-        $card->card_number        = str_replace(' ','',$data->number);
-        $card->expiration_month   = Carbon::createFromFormat('Y-m-d',$data->expiration_date.'-01')->format('m');
-        $card->expiration_year    = Carbon::createFromFormat('Y-m-d',$data->expiration_date.'-01')->format('Y');
-        $card->security_code      = $data->cvv;
-        $card->payment_method_id  = $data->brand;
-        $card->payment_type_id    = $data->card_type;
-        $card->cardholder         = $holder;
+            $card = new \stdClass();
+            $card->card_number        = str_replace(' ','',$data->number);
+            $card->expiration_month   = Carbon::createFromFormat('Y-m-d',$data->expiration_date.'-01')->format('m');
+            $card->expiration_year    = Carbon::createFromFormat('Y-m-d',$data->expiration_date.'-01')->format('Y');
+            $card->security_code      = $data->cvv;
+            $card->payment_method_id  = $data->brand;
+            $card->payment_type_id    = $data->card_type;
+            $card->cardholder         = $holder;
+        }
 
         return [
             'method' => Constants::$REQUEST_METHOD_POST,

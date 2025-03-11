@@ -246,19 +246,10 @@ class Validator
             if($gateway == Constants::$MERCADO_PAGO_GATEWAY_NAME)
             {
                 $rules = [
-                    'card_token' => 'required',
+                    'card_id'    => 'required_if:card_token,null',
+                    'cvv'        => 'required_if:card_token,null',
+                    'card_token' => 'required_if:card_id,null',
                 ];
-
-                //$rules = [
-                //    'number'                    => 'required|minlength:13|maxlength:19',
-                //    'holder_name'               => 'required|minlength:6|maxlength:64',
-                //    'holder_document_type'      => 'required|expected:cnpj,cpf',
-                //    'holder_document_number'    => 'required|regex:cnpj,cpf',
-                //    'expiration_date'           => 'required|date:Y-m',
-                //    'cvv'                       => 'required|minlength:3|maxlength:4',
-                //    'brand'                     => 'required|minlength:3|maxlength:64',
-                //    'card_type'                 => 'required|expected:credit_card,debit_card',
-                //];
             }
             elseif($gateway == Constants::$PAGARME_GATEWAY_NAME)
             {
