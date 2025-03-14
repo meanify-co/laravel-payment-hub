@@ -21,7 +21,7 @@ composer require meanify-co/laravel-payment-hub
 | Gateway      | Status      | Available versions |
 |--------------|-------------|--------------------|
 | Mercado Pago | Developing  | v1                 |
-| Pagar.me     | Coming soon | v5                 |
+| Pagar.me     | Developing  | v5                 |
 | Stripe       | Coming soon | -                  |
 | PayPal       | Coming soon | -                  |
 | PagSeguro    | Coming soon | -                  |
