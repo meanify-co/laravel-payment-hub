@@ -33,9 +33,9 @@ composer require meanify-co/laravel-payment-hub
 
 | Methods                                      | Mercado Pago  (v1)  | Pagar.me (v5) | 
 |----------------------------------------------|---------------------|---------------|
-| `card()->get()`                              | ✅                   | ❌             |
-| `card()->create()`                           | ✅                   | ❌             |
-| `card()->delete()`                           | ✅                   | ❌             |
+| `card()->get()`                              | ✅                   | ✅             |
+| `card()->create()`                           | ✅                   | ✅             |
+| `card()->delete()`                           | ✅                   | ✅             |
 | `customer()->get()`                          | ✅                   | ❌             |
 | `customer()->create()`                       | ✅                   | ❌             |
 | `customer()->update()`                       | ✅                   | ❌             |
