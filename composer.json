@@ -16,10 +16,11 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^7.3 || 8.*",
+        "php": "^8.0",
         "guzzlehttp/guzzle": "^7.8",
         "respect/validation": "^2.1"
     },
+    "require-dev": {},
     "autoload": {
         "psr-4": {
             "Meanify\\LaravelPaymentHub\\": "src/"

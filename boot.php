@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('meanifyPaymentHub'))
+if (! function_exists('meanify_payment_hub'))
 {
     /**
      * @param string $gatewayActiveKey mercado-pago|mercadopago|pagarme
@@ -9,9 +9,9 @@ if (! function_exists('meanifyPaymentHub'))
      * @param array $gatewayParams
      * @return \Meanify\LaravelPaymentHub\Factory
      */
-    function meanifyPaymentHub(string $gatewayActiveKey, string $gatewayVersion, string $gatewayEnvironment, array $gatewayParams = [])
+    function meanify_payment_hub(string $gatewayActiveKey, string $gatewayVersion, string $gatewayEnvironment, array $gatewayParams = [])
     {
-        return app('meanifyPaymentHub', [
+        return app('meanify_payment_hub', [
             'gatewayActiveKey'   => $gatewayActiveKey,
             'gatewayVersion'     => $gatewayVersion,
             'gatewayEnvironment' => $gatewayEnvironment,
