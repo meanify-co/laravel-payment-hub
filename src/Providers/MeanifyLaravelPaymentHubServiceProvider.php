@@ -11,7 +11,7 @@ class MeanifyLaravelPaymentHubServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (!function_exists('meanifyPaymentHub')) {
+        if (!function_exists('meanify_payment_hub')) {
             require_once __DIR__ . '/../../boot.php';
         }
     }
@@ -21,7 +21,7 @@ class MeanifyLaravelPaymentHubServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('meanifyPaymentHub', function($app, $params) {
+        $this->app->singleton('meanify_payment_hub', function($app, $params) {
             return new \Meanify\LaravelPaymentHub\Factory($params['gatewayActiveKey'], $params['gatewayVersion'], $params['gatewayEnvironment'], $params['gatewayParams']);
         });
     }
