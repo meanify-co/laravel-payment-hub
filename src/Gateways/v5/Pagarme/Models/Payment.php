@@ -277,4 +277,24 @@ class Payment implements ModelPaymentInterface
             'result' => []
         ];
     }
+
+    /**
+     * @param $paymentData
+     * @return array
+     */
+    public function cancelOrder($paymentData)
+    {
+        if($paymentData->status != 'pending')
+        {
+            throw new \Exception('Order status not allowed for this action');
+        }
+
+        return [
+            'method' => Constants::$REQUEST_METHOD_PATCH,
+            'uri' => "orders/$paymentData->id/closed",
+            'result' => (object)[
+                'status' => 'canceled'
+            ]
+        ];
+    }
 }
