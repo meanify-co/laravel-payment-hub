@@ -246,4 +246,35 @@ class Payment implements ModelPaymentInterface
 
         return $result;
     }
+
+    /**
+     * @param $paymentData
+     * @return array
+     */
+    public function cancelPaymentCharge($paymentData)
+    {
+        if(!isset($paymentData->charges))
+        {
+            throw new \Exception('Payment not have paid transaction');
+        }
+        else if(count($paymentData->charges) == 0)
+        {
+            throw new \Exception('Payment not have paid transaction');
+        }
+
+        $charges = $paymentData->charges;
+
+        $lastCharge = $paymentData->charges[count($charges) - 1];
+
+        if($lastCharge->status != 'pending' and $lastCharge->status != 'waiting_payment')
+        {
+            throw new \Exception('Payment status not allowed for this action');
+        }
+
+        return [
+            'method' => Constants::$REQUEST_METHOD_DELETE,
+            'uri' => "charges/$lastCharge->id",
+            'result' => []
+        ];
+    }
 }

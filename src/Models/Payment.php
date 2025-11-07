@@ -194,4 +194,28 @@ class Payment implements ModelPaymentInterface
 
         return $result;
     }
+
+    /**
+     * @param $paymentId
+     * @return $this
+     */
+    public function cancelPaymentCharge($paymentId)
+    {
+        $getData = $this->get($paymentId)->send();
+
+        if(!$getData['success'])
+        {
+            throw new \Exception('Payment not found');
+        }
+        else
+        {
+            $paymentData = $getData['result'];
+        }
+
+        $apiRequest = $this->properties['gatewayInstance']->setMethod('Payment','cancelPaymentCharge')->call($paymentData);
+
+        $this->setApiRequest($apiRequest);
+
+        return $this;
+    }
 }
